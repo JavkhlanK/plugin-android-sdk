@@ -12,7 +12,11 @@ for root in $ANDROID_HOME $ANDROID_SDK_ROOT $HOME/Android/Sdk $HOME/Library/Andr
     end
     # if we added at least one path, let's add them to the real PATH, set ANDROID_HOME and finish
     if set -q paths[1]
-      set -gx PATH $PATH $paths
+      for path in $paths
+        if not contains -- $path $PATH
+          set -gx PATH $PATH $path
+        end
+      end
       set -gx ANDROID_HOME $root
       break
     end
